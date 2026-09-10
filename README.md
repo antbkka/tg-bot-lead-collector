@@ -50,7 +50,7 @@
 ### 1. Клонирование и виртуальное окружение
 
 ```bash
-git clone https://github.com/your-username/tg-bot-lead-collector.git
+git clone https://github.com/antbkka/tg-bot-lead-collector.git
 cd tg-bot-lead-collector
 python -m venv .venv
 ```
