@@ -1,0 +1,37 @@
+# Секреты и локальная конфигурация
+.env
+.env.*
+!.env.example
+requirements-dev.txt
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+tests/
+
+# SQLite и служебные файлы
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# IDE и ОС
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Логи и выгрузки
+*.log
+leads_*.csv
