@@ -2,7 +2,7 @@
 .env
 .env.*
 !.env.example
-requirements-dev.txt
+
 # Виртуальные окружения
 .venv/
 venv/
@@ -17,7 +17,6 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
-tests/
 
 # SQLite и служебные файлы
 *.db
