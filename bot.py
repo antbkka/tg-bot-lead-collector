@@ -308,7 +308,7 @@ class Database:
             )
         )
         writer.writerows(tuple(row) for row in rows)
-        return stream.getvalue().encode("utf-8-sig")
+        return stream.getvalue().encode("cp1251", errors="replace")
 
 
 @dataclass(slots=True)
