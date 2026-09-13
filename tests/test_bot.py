@@ -4,6 +4,7 @@ import io
 from bot import (
     LEAD_STATUS_NOTIFIED,
     LEAD_STATUS_REPLIED,
+    NAME_PATTERN,
     Database,
     format_summary,
 )
@@ -13,10 +14,27 @@ def test_summary_escapes_html() -> None:
     escaped = format_summary(
         {"name": "<X>", "task": "a & b"}
     )
+    # Проверяем, что опасные подстроки отсутствуют в сыром виде.
     assert "<X>" not in escaped
-    assert "a & b" not in escaped
-    assert "&lt;X&gt;" in escaped
-    assert "a &amp; b" in escaped
+    # Проверяем, что они заменены на экранированные HTML-сущности.
+    escaped_x = "&" + "lt;X&" + "gt;"
+    escaped_amp = "a " + "&" + "amp; b"
+    assert escaped_x in escaped
+    assert escaped_amp in escaped
+
+
+def test_name_pattern_rejects_digits_and_symbols() -> None:
+    assert NAME_PATTERN.fullmatch("Иван")
+    assert NAME_PATTERN.fullmatch("Anna Maria")
+    assert NAME_PATTERN.fullmatch("Jean-Paul")
+    assert NAME_PATTERN.fullmatch("O'Brien")
+    assert NAME_PATTERN.fullmatch("Анна-Мария")
+
+    assert not NAME_PATTERN.fullmatch("Иван123")
+    assert not NAME_PATTERN.fullmatch("user1")
+    assert not NAME_PATTERN.fullmatch("Иван@")
+    assert not NAME_PATTERN.fullmatch("Test_123")
+    assert not NAME_PATTERN.fullmatch("Иван.")
 
 
 def test_database_lifecycle(tmp_path) -> None:

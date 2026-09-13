@@ -13,6 +13,7 @@ import csv
 import io
 import logging
 import os
+import re
 import sqlite3
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -491,6 +492,11 @@ async def admin_export(message: Message, app: AppContext) -> None:
     )
 
 
+# Допустимы буквы (кириллица/латиница), пробелы, дефисы и апострофы.
+# Цифры и прочие символы запрещены, чтобы имя оставалось осмысленным.
+NAME_PATTERN = re.compile(r"^[A-Za-zА-Яа-яЁё'\- ]+$")
+
+
 @router.message(LeadForm.name, F.text)
 async def process_name(message: Message, state: FSMContext) -> None:
     """Проверяет имя и переходит к описанию задачи."""
@@ -498,6 +504,12 @@ async def process_name(message: Message, state: FSMContext) -> None:
     name = " ".join(message.text.split())
     if not 2 <= len(name) <= 100:
         await message.answer("Имя должно содержать от 2 до 100 символов.")
+        return
+    if not NAME_PATTERN.fullmatch(name):
+        await message.answer(
+            "Имя не должно содержать цифр и спецсимволов. "
+            "Используйте буквы, пробелы, дефис или апостроф."
+        )
         return
     await state.update_data(name=name)
     await state.set_state(LeadForm.task)
